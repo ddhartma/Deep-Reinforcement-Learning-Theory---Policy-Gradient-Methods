@@ -14,9 +14,9 @@
 [image14]: assets/code_result.png "image14"
 [image15]: assets/cart_pole.png "image15"
 
-# Deep Reinforcement Learning Theory - Policy Based Methods
+# Deep Reinforcement Learning Theory - Policy Gradient Methods
 
-## Content 
+## Content
 - [Introduction](#intro)
 - [What are Policy Gradient Methods?](#What_are_Policy_Gradient_Methods)
 - [The Big Picture](#The_Big_Picture)
@@ -33,7 +33,7 @@
 - Deep reinforcement learning refers to approaches where the knowledge is represented with a deep neural network
 
 ### Overview:
-- ***Policy-Based Methods***: methods such as 
+- ***Policy-Based Methods***: methods such as
     - hill climbing
     - simulated annealing
     - adaptive noise scaling
@@ -51,8 +51,8 @@
     - how to combine value-based and policy-based methods
     - bringing together the best of both worlds, to solve challenging reinforcement learning problems
 
-## What are Policy Gradient Methods? <a name="What_are_Policy_Gradient_Methods"></a> 
-- ***Policy-based methods** are a class of algorithms that search directly for the optimal policy, without simultaneously maintaining value function estimates.
+## What are Policy Gradient Methods? <a name="What_are_Policy_Gradient_Methods"></a>
+- ***Policy-based methods*** are a class of algorithms that search directly for the optimal policy, without simultaneously maintaining value function estimates.
 - ***Policy gradient methods*** are a subclass of policy-based methods that estimate the weights of an optimal policy through ***gradient ascent***.
 - Here, we use the policy with a neural network, where the goal to find the weights **θ** of the network that maximize expected return.
 
@@ -67,7 +67,7 @@
 
 ### Reinforcement LEarning vs. Supervised Learning:
 - For each state action pair in the episode we add Gaussian noise to the weights to make it slightly more to select this action when the agent is in this state
-- This is comparable to Supervised Learning: 
+- This is comparable to Supervised Learning:
     - If the networks makes a wrong prediction, weights are slightly changed to make better prediction in the next trial.
     - In both cases we have Input/Output pairs (RL: state-action pairs, SL: image-label pairs)
     - In RL are conflicting situations about choosing best action for given state. In SL: Same image appears twice in the dataset (one as dog and one as cat label)
@@ -91,8 +91,8 @@
 
     ![image11]
 
-- Return **R(τ)** is a function of the trajectory **τ**. Then, we calculate the weighted average (where the weights are given by **P(τ;θ)** of all possible values that the return **R(τ)** can take. 
-    
+- Return **R(τ)** is a function of the trajectory **τ**. Then, we calculate the weighted average (where the weights are given by **P(τ;θ)** of all possible values that the return **R(τ)** can take.
+
 
 ## REINFORCE <a name="REINFORCE"></a>
 - **Goal** is to find the values of the weights **θ** in the neural network that maximize the expected return **U**, where **τ** is an arbitrary trajectory. One way to determine the value of **θ** that maximizes this function is through **gradient ascent**.
@@ -109,12 +109,12 @@
     ![image13]
 
 - The pseudocode for REINFORCE is as follows:
-    1. Use the policy **π<sub>θ</sub>** to collect **m** trajectories **{τ<sup>(1)</sup>, τ<sup>(2)</sup>, …, τ<sup>(m)</sup>}** with horizon **H**. We refer to the i-th trajectory as 
-    
+    1. Use the policy **π<sub>θ</sub>** to collect **m** trajectories **{τ<sup>(1)</sup>, τ<sup>(2)</sup>, …, τ<sup>(m)</sup>}** with horizon **H**. We refer to the i-th trajectory as
+
         ![image1]
-    
+
     2. Use the trajectories to estimate the gradient **∇<sub>θ</sub>U(θ)**
-    
+
         ![image2]
 
     3. Update the weights of the policy:
@@ -123,22 +123,22 @@
 
     4. Loop over step 1-3
 
-   
+
 
 ## Derivation <a name="Derivation"></a>
 - We derived the likelihood ratio policy gradient:
 
     ![image6]
 
-- We can approximate the gradient above with a sample-weighted average: 
+- We can approximate the gradient above with a sample-weighted average:
 
     ![image4]
 
-- We calculated the following: 
+- We calculated the following:
 
     ![image5]
 
-## REINFORCE - Code Implementation <a name="reinforce_code"></a> 
+## REINFORCE - Code Implementation <a name="reinforce_code"></a>
 - Open Jupyter Notebook ```reinforce.ipynb```
     ### Import the Necessary Packages
     ```
@@ -181,17 +181,17 @@
         """
         def __init__(self, s_size=4, h_size=16, a_size=2):
             """ Initialize weights in the policy arbitrarily
-                
+
                 INPUTS:
                 ------------
                     s_size - (int) size of state space
                     h_size - (int) number of hidden units
                     a_size - (int) size of action space
-                
+
                 OUTPUTS:
                 ------------
-                    no direct 
-                    
+                    no direct
+
             """
             super(Policy, self).__init__()
             self.fc1 = nn.Linear(s_size, h_size)
@@ -199,11 +199,11 @@
 
         def forward(self, x):
             """ Create forward pass of neural network.
-            
-                INPUTS: 
+
+                INPUTS:
                 ------------
                     x - (torch tensor)
-                
+
                 OUTPUTS:
                 ------------
                     output - (torch tensor) softmax classification output
@@ -212,14 +212,14 @@
             x = self.fc2(x)
             output = F.softmax(x, dim=1)
             return output
-        
+
         def act(self, state):
             """ Execute forward pass get best action for given state
-        
+
                 INPUTS:
                 ------------
                     state - (numpy array) of state values (4 values)
-                
+
                 OUTPUTS:
                 ------------
                     action_item - (int) 0 or 1
@@ -247,14 +247,14 @@
 
     def reinforce(n_episodes=1000, max_t=1000, gamma=1.0, print_every=100):
         """ Implementation of REINFORCE algorithm
-            
+
             INPUTS:
             ------------
                 n_episodes - (int) maximum number of training episodes
                 max_t - (int) maximum number of timesteps per episode
                 gamma - (float) discount rate
                 print_every - (int) how often to print average score (over last 100 episodes)
-            
+
             OUTPUTS:
             ------------
                 scores - (list) of accumulated rewards
@@ -271,34 +271,34 @@
                 state, reward, done, _ = env.step(action)
                 rewards.append(reward)
                 if done:
-                    break 
+                    break
             scores_deque.append(sum(rewards))
             scores.append(sum(rewards))
-            
+
             discounts = [gamma**i for i in range(len(rewards)+1)]
             R = sum([a*b for a,b in zip(discounts, rewards)])
-            
+
             policy_loss = []
             for log_prob in saved_log_probs:
                 policy_loss.append(-log_prob * R)
             policy_loss = torch.cat(policy_loss).sum()
-            
+
             optimizer.zero_grad()
             policy_loss.backward()
             optimizer.step()
-            
+
             if i_episode % print_every == 0:
                 print('Episode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_deque)))
             if np.mean(scores_deque)>=195.0:
                 print('Environment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode-100, np.mean(scores_deque)))
                 break
-            
+
         return scores
-        
+
     scores = reinforce()
     ```
     ![image14]
-    
+
     ### Watch a Smart Agent!
     ```
     env = gym.make('CartPole-v0')
@@ -307,13 +307,13 @@
     img = plt.imshow(env.render(mode='rgb_array'))
     for t in range(1000):
         action, _ = policy.act(state)
-        img.set_data(env.render(mode='rgb_array')) 
+        img.set_data(env.render(mode='rgb_array'))
         plt.axis('off')
         display.display(plt.gcf())
         display.clear_output(wait=True)
         state, reward, done, _ = env.step(action)
         if done:
-            break 
+            break
 
     env.close()
     ```
