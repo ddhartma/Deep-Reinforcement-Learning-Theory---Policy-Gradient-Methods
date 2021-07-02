@@ -28,7 +28,7 @@
 - [Acknowledgments](#Acknowledgments)
 - [Further Links](#Further_Links)
 
-## Introduction <a name="what_is_reinforcement"></a>
+## Introduction <a id="what_is_reinforcement"></a>
 - Reinforcement learning is **learning** what to do — **how to map situations to actions** — so as **to maximize a numerical reward** signal. The learner is not told which actions to take, but instead must discover which actions yield the most reward by trying them. (Sutton and Barto, [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book.html))
 - Deep reinforcement learning refers to approaches where the knowledge is represented with a deep neural network
 
@@ -51,14 +51,14 @@
     - how to combine value-based and policy-based methods
     - bringing together the best of both worlds, to solve challenging reinforcement learning problems
 
-## What are Policy Gradient Methods? <a name="What_are_Policy_Gradient_Methods"></a>
+## What are Policy Gradient Methods? <a id="What_are_Policy_Gradient_Methods"></a>
 - ***Policy-based methods*** are a class of algorithms that search directly for the optimal policy, without simultaneously maintaining value function estimates.
 - ***Policy gradient methods*** are a subclass of policy-based methods that estimate the weights of an optimal policy through ***gradient ascent***.
 - Here, we use the policy with a neural network, where the goal to find the weights **θ** of the network that maximize expected return.
 
     ![image7]
 
-## The Big Picture <a name="The_Big_Picture"></a>
+## The Big Picture <a id="The_Big_Picture"></a>
 - The policy gradient method will iteratively amend the policy network weights to:
     - make (state, action) pairs that resulted in positive return more likely, and
     - make (state, action) pairs that resulted in negative return less likely.
@@ -79,7 +79,7 @@
 
 - Connections between policy gradient methods and supervised learning, check out [Andrej Karpathy's blog post](http://karpathy.github.io/2016/05/31/rl/)
 
-## Problem Setup <a name="Problem_Setup"></a>
+## Problem Setup <a id="Problem_Setup"></a>
 - A **trajectory** **τ** is a state-action sequence (without rewards) **s<sub>0</sub>, a<sub>0</sub>, …, s<sub>H</sub>, a<sub>H</sub>, s<sub>H+1</sub>**.
 - No length restrictions: epside or small part of it.
 - Length: H (=Horizon)
@@ -94,7 +94,7 @@
 - Return **R(τ)** is a function of the trajectory **τ**. Then, we calculate the weighted average (where the weights are given by **P(τ;θ)** of all possible values that the return **R(τ)** can take.
 
 
-## REINFORCE <a name="REINFORCE"></a>
+## REINFORCE <a id="REINFORCE"></a>
 - **Goal** is to find the values of the weights **θ** in the neural network that maximize the expected return **U**, where **τ** is an arbitrary trajectory. One way to determine the value of **θ** that maximizes this function is through **gradient ascent**.
 - This algorithm is closely related to gradient descent, where the differences are that:
 
@@ -125,7 +125,7 @@
 
 
 
-## Derivation <a name="Derivation"></a>
+## Derivation <a id="Derivation"></a>
 - We derived the likelihood ratio policy gradient:
 
     ![image6]
@@ -138,7 +138,7 @@
 
     ![image5]
 
-## REINFORCE - Code Implementation <a name="reinforce_code"></a>
+## REINFORCE - Code Implementation <a id="reinforce_code"></a>
 - Open Jupyter Notebook ```reinforce.ipynb```
     ### Import the Necessary Packages
     ```
@@ -320,12 +320,12 @@
     ![image15]
 
 
-## Setup Instructions <a name="Setup_Instructions"></a>
+## Setup Instructions <a id="Setup_Instructions"></a>
 The following is a brief set of instructions on setting up a cloned repository.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites: Installation of Python via Anaconda and Command Line Interaface <a name="Prerequisites"></a>
+### Prerequisites: Installation of Python via Anaconda and Command Line Interaface <a id="Prerequisites"></a>
 - Install [Anaconda](https://www.anaconda.com/distribution/). Install Python 3.7 - 64 Bit
 
 - Upgrade Anaconda via
@@ -339,7 +339,7 @@ $ conda upgrade --all
 $ export PATH="/path/to/anaconda/bin:$PATH"
 ```
 
-### Clone the project <a name="Clone_the_project"></a>
+### Clone the project <a id="Clone_the_project"></a>
 - Open your Command Line Interface
 - Change Directory to your project older, e.g. `cd my_github_projects`
 - Clone the Github Project inside this folder with Git Bash (Terminal) via:
